@@ -57,14 +57,15 @@ resource "aws_autoscaling_group" "asg" {
     availability_zones=["${data.aws_availability_zones.available.names}"]
     vpc_zone_identifier=["subnet-045497283f6e774b6", "subnet-0bb2b69f0367ee463" ]
     load_balancers=["${aws_elb.aelbgd.name}"]
-    health_check_type="ELB"
+    health_check_type   ="ELB"
     min_size=1
     max_size=2
 }
 
 resource "aws_elb" "aelbgd" {
     name="aelbgd-first"
-    availability_zones=["${data.aws_availability_zones.available.names}"]
+#    availability_zones=["us-east-1a","us-east-1b"]
+    subnets=["subnet-045497283f6e774b6", "subnet-0bb2b69f0367ee463" ]
     security_groups=["${aws_security_group.allow_elb.id}"]
     listener {
         lb_port=80
