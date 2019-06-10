@@ -2,6 +2,26 @@ provider "aws" {
     region = "us-east-1"
 }
 
+resource "aws_s3_bucket" "terraform_state" {
+    bucket = "terraform-state-gdomal"
+
+    versioning {
+        enabled = true
+    }
+
+    lifecycle {
+        prevent_destroy = true
+    }
+}
+
+terraform {
+    backend "s3" {
+        bucket = "terraform-state-gdomal"
+        key = "domal/tf-gdomal.tfstate"
+        region = "us-east-1"
+    }
+}
+
 resource "aws_instance" "gdomal1" {
     ami = "ami-0a313d6098716f372"
     instance_type= "t2.micro"
